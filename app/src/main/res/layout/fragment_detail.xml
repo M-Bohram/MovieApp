@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/Main_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:nestedScrollingEnabled="true"
+    android:background="@color/scroll_view_background">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/container_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Movie's Name-->
+        <FrameLayout
+            android:id="@+id/framelayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/movie_name_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY" />
+
+            <TextView
+                android:id="@+id/movie_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="center"
+                android:text="Doctor Strange"
+                android:textColor="@color/movie_name_text"
+                android:textSize="@dimen/movie_name" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/backdrop_poster"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:scaleType="fitXY" />
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/container_3"
+                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/release_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/release_date_top_margin"
+                    android:textColor="@color/release_date_text"
+                    android:textSize="@dimen/release_date" />
+
+
+                <TextView
+                    android:id="@+id/vote_average"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/vote_average_top_margin"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/vote_average_text"
+                    android:textSize="@dimen/vote_average" />
+
+                <CheckBox
+                    android:id="@+id/favorite_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/checkbox_top_margin"
+                    android:button="@drawable/star" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/overview_text"
+            android:layout_margin="10dp"
+            android:textSize="@dimen/overview_text" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@color/trailers_background"
+            android:paddingLeft="10dp"
+            android:text="Trailers :"
+            android:gravity="center_horizontal"
+            android:textColor="@color/trailers_text"
+            android:textSize="@dimen/trailers" />
+
+        <!--<Spinner-->
+        <!--android:id="@+id/spinner"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:prompt="@string/spinner_title"-->
+        <!--/>-->
+
+        <ListView
+            android:id="@+id/listview_trailers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="true" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@color/reviews_background"
+            android:gravity="center_horizontal"
+            android:paddingLeft="10dp"
+            android:text="Reviews :"
+            android:textColor="@color/reviews_text"
+            android:textSize="@dimen/reviews" />
+
+        <!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:id="@+id/last_container"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="150dp"-->
+        <!--android:nestedScrollingEnabled="true"-->
+        <!--android:layout_marginBottom="10dp">-->
+
+        <ListView
+            android:id="@+id/listview_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:nestedScrollingEnabled="true" />
+        <!--</ScrollView>-->
+
+
+    </LinearLayout>
+
+</ScrollView>

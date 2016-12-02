@@ -1,0 +1,21 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="release_date_top_margin">40dp</dimen>
+    <dimen name="vote_average_top_margin">30dp</dimen>
+    <dimen name="checkbox_top_margin">30dp</dimen>
+    <dimen name="movie_name">28sp</dimen>
+    <dimen name="release_date">24sp</dimen>
+    <dimen name="vote_average">22sp</dimen>
+    <dimen name="overview_text">18sp</dimen>
+    <dimen name="trailers">22sp</dimen>
+    <dimen name="reviews">22sp</dimen>
+    <dimen name="trailer_name">18sp</dimen>
+    <dimen name="trailer_text_margin">20dp</dimen>
+    <dimen name="trailer_image_margin">15dp</dimen>
+    <dimen name="review_author">20sp</dimen>
+    <dimen name="review_content">16sp</dimen>
+
+
+</resources>

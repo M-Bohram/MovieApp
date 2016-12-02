@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#616161</color>
+    <color name="colorPrimaryDark">#212121</color>
+    <color name="colorAccent">#bdbdbd</color>
+
+    <color name="scroll_view_background">#eeeeee</color>
+    <color name="movie_name_text">#fafafafa</color>
+    <color name="release_date_text">#212121</color>
+    <color name="vote_average_text">#424242</color>
+    <color name="overview_text">#424242</color>
+    <color name="trailers_background">#424242</color>
+    <color name="trailers_text">#fafafafa</color>
+    <color name="trailer_text">#424242</color>
+    <color name="reviews_background">#424242</color>
+    <color name="reviews_text">#fafafafa</color>
+    <color name="review_text">#424242</color>
+    <color name="review_title_text">#212121</color>
+</resources>
