@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Call
         }
         return super.onOptionsItemSelected(item);
     }
+
     /*
     * To make the MainActivity notified if the user clicked on a movie, and handle if two-pane case
     * or smartphones.
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Call
             Bundle bundle = new Bundle();
             bundle.putParcelable("Movie", movie);
             DetailFragment df = new DetailFragment();
-            DetailFragment.isTwoPane= true;
+            DetailFragment.isTwoPane = true;
             df.setArguments(bundle);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.movie_detail_container, df, DETAILFRAGMENT_TAG)

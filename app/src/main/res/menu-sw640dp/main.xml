@@ -18,9 +18,9 @@
         app:showAsAction="always" />
 
     <!--<item android:id="@+id/action_share"-->
-        <!--android:title="@string/action_share"-->
-        <!--app:showAsAction="always"-->
-        <!--app:actionProviderClass="android.support.v7.widget.ShareActionProvider" />-->
+    <!--android:title="@string/action_share"-->
+    <!--app:showAsAction="always"-->
+    <!--app:actionProviderClass="android.support.v7.widget.ShareActionProvider" />-->
 
 
 </menu>

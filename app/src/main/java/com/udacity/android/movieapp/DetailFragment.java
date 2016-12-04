@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -63,31 +65,48 @@ public class DetailFragment extends Fragment {
 
     public static boolean isTwoPane;
 
+    private ShareActionProvider mShareActionProvider;
+
     public DetailFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!isTwoPane) {
             setHasOptionsMenu(true);
-        }
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.detail_menu, menu);
+        // Retrieve the share menu item
+        MenuItem menuItem = menu.findItem(R.id.action_share);
+
+        // Get the provider and hold onto it to set/change the share intent.
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    private Intent createShareIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, mMovie.getTitle() + " " +
+                "http://www.youtube.com/watch?v=" + mTrailers.get(0).getKey());
+        return shareIntent;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        if (id == R.id.action_favourite) {
-            Intent intent = new Intent(getActivity(), FavouriteActivity.class);
-            startActivity(intent);
+        if(!isTwoPane) {
+            if (id == R.id.action_favourite) {
+                Intent intent = new Intent(getActivity(), FavouriteActivity.class);
+                startActivity(intent);
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -240,7 +259,6 @@ public class DetailFragment extends Fragment {
                                                             final Uri builtUri = Uri.parse(YOUTUBE_URI).buildUpon()
                                                                     .appendQueryParameter("v", key)
                                                                     .build();
-
                                                             Intent intent = new Intent(Intent.ACTION_VIEW, builtUri);
                                                             startActivity(intent);
                                                         }
@@ -391,6 +409,9 @@ public class DetailFragment extends Fragment {
                 mTrailerAdapter.clear();
                 for (Trailer trailer : trailers) {
                     mTrailerAdapter.add(trailer);
+                }
+                if (mShareActionProvider != null) {
+                    mShareActionProvider.setShareIntent(createShareIntent());
                 }
                 mTrailerAdapter.notifyDataSetChanged();
             }
