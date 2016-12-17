@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +17,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -24,12 +25,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.udacity.android.movieapp.Favourite.FavouriteContract;
 import com.udacity.android.movieapp.Movie.Movie;
 import com.udacity.android.movieapp.Review.Review;
 import com.udacity.android.movieapp.Review.ReviewAdapter;
 import com.udacity.android.movieapp.Trailer.Trailer;
-import com.udacity.android.movieapp.Trailer.TrailerAdapter;
-import com.udacity.android.movieapp.Favourite.FavouriteContract;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,26 +45,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class DetailFragment extends Fragment {
+public class DetailFragment extends Fragment implements TrailerRecyclerView.ListSelectedListenter {
     //constant strings.
     private static final String YOUTUBE_URI = "http://www.youtube.com/watch";
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
-
+    public static boolean isTwoPane;
     //trailer objects.
-    private ListView mTrailerListView;
-    private TrailerAdapter mTrailerAdapter;
+//    private ListView mTrailerListView;
+//    private TrailerAdapter mTrailerAdapter;
     private ArrayList<Trailer> mTrailers = new ArrayList<Trailer>();
+    private RecyclerView mTrailerRecyclerView;
+    private TrailerRecyclerView mTrailerAdapter;
     //review objects.
     private ListView mReviewListView;
     private ReviewAdapter mReviewAdapter;
     private ArrayList<Review> mReviews = new ArrayList<Review>();
-
     private Movie mMovie = new Movie();
-
     private CheckBox mCheckBox;
-
-    public static boolean isTwoPane;
-
     private ShareActionProvider mShareActionProvider;
 
     public DetailFragment() {
@@ -74,7 +71,7 @@ public class DetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -102,7 +99,7 @@ public class DetailFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        if(!isTwoPane) {
+        if (!isTwoPane) {
             if (id == R.id.action_favourite) {
                 Intent intent = new Intent(getActivity(), FavouriteActivity.class);
                 startActivity(intent);
@@ -121,10 +118,10 @@ public class DetailFragment extends Fragment {
         view.smoothScrollTo(0, 0);
 
         Intent intent = getActivity().getIntent();
-        Bundle bundle ;
-        if(intent!=null){
+        Bundle bundle;
+        if (intent != null) {
             bundle = getArguments();
-        }else{
+        } else {
             bundle = intent.getExtras();
         }
 
@@ -140,9 +137,9 @@ public class DetailFragment extends Fragment {
 
             RequestTrailerData(mMovie.getId());
             RequestReviewData(mMovie.getId());
-
-            mTrailerAdapter = new TrailerAdapter(getActivity(), mTrailers);
-
+            ///////////////////////EDITED
+//            mTrailerAdapter = new TrailerRecyclerView(mTrailers);
+            ///////////////////////EDITED
             mReviewAdapter = new ReviewAdapter(getActivity(), mReviews);
 
             // resize(500,500) , resize(500,700) got them with try and error.
@@ -248,22 +245,28 @@ public class DetailFragment extends Fragment {
                 }
             }.execute();
 
-            mTrailerListView = (ListView) rootView.findViewById(R.id.listview_trailers);
-            mTrailerListView.setAdapter(mTrailerAdapter);
-            mTrailerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                                        @Override
-                                                        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//            mTrailerListView = (ListView) rootView.findViewById(R.id.listview_trailers);
+//            mTrailerListView.setAdapter(mTrailerAdapter);
+//            mTrailerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                                                        @Override
+//                                                        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//
+//                                                            Trailer trailer = mTrailerAdapter.getItem(position);
+//                                                            String key = trailer.getKey();
+//                                                            final Uri builtUri = Uri.parse(YOUTUBE_URI).buildUpon()
+//                                                                    .appendQueryParameter("v", key)
+//                                                                    .build();
+//                                                            Intent intent = new Intent(Intent.ACTION_VIEW, builtUri);
+//                                                            startActivity(intent);
+//                                                        }
+//                                                    }
+//            );
+            mTrailerRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
+            mTrailerAdapter = new TrailerRecyclerView(mTrailers, this);
+            mTrailerRecyclerView.setAdapter(mTrailerAdapter);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+            mTrailerRecyclerView.setLayoutManager(linearLayoutManager);
 
-                                                            Trailer trailer = mTrailerAdapter.getItem(position);
-                                                            String key = trailer.getKey();
-                                                            final Uri builtUri = Uri.parse(YOUTUBE_URI).buildUpon()
-                                                                    .appendQueryParameter("v", key)
-                                                                    .build();
-                                                            Intent intent = new Intent(Intent.ACTION_VIEW, builtUri);
-                                                            startActivity(intent);
-                                                        }
-                                                    }
-            );
 
             mReviewListView = (ListView) rootView.findViewById(R.id.listview_reviews);
             mReviewListView.setAdapter(mReviewAdapter);
@@ -280,6 +283,16 @@ public class DetailFragment extends Fragment {
     private void RequestReviewData(int id) {
         FetchReviewTask reviewTask = new FetchReviewTask();
         reviewTask.execute(Integer.toString(id));
+    }
+
+    @Override
+    public void onListItemClick(int positionIndex) {
+        String key = mTrailers.get(positionIndex).getKey();
+        final Uri builtUri = Uri.parse(YOUTUBE_URI).buildUpon()
+                .appendQueryParameter("v", key)
+                .build();
+        Intent intent = new Intent(Intent.ACTION_VIEW, builtUri);
+        startActivity(intent);
     }
 
     public class FetchTrailerTask extends AsyncTask<String, Void, List<Trailer>> {
@@ -406,10 +419,13 @@ public class DetailFragment extends Fragment {
         @Override
         protected void onPostExecute(List<Trailer> trailers) {
             if (trailers != null) {
-                mTrailerAdapter.clear();
-                for (Trailer trailer : trailers) {
-                    mTrailerAdapter.add(trailer);
+                if (mTrailers != null) {
+                    mTrailers.clear();
+                    for (Trailer trailer : trailers) {
+                        mTrailers.add(trailer);
+                    }
                 }
+                mTrailerAdapter = new TrailerRecyclerView(mTrailers);
                 if (mShareActionProvider != null) {
                     mShareActionProvider.setShareIntent(createShareIntent());
                 }

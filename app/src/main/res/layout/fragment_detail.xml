@@ -4,8 +4,8 @@
     android:id="@+id/Main_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:nestedScrollingEnabled="true"
-    android:background="@color/scroll_view_background">
+    android:background="@color/scroll_view_background"
+    android:nestedScrollingEnabled="true">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/container_1"
@@ -47,17 +47,17 @@
             <ImageView
                 android:id="@+id/backdrop_poster"
                 android:layout_width="0dp"
-                android:layout_weight="0.5"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
+                android:layout_weight="0.5"
                 android:scaleType="fitXY" />
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/container_3"
-                android:layout_weight="0.5"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="0.5"
                 android:orientation="vertical">
 
                 <TextView
@@ -74,8 +74,8 @@
                     android:id="@+id/vote_average"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/vote_average_top_margin"
                     android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/vote_average_top_margin"
                     android:textColor="@color/vote_average_text"
                     android:textSize="@dimen/vote_average" />
 
@@ -96,8 +96,8 @@
             android:id="@+id/overview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/overview_text"
             android:layout_margin="10dp"
+            android:textColor="@color/overview_text"
             android:textSize="@dimen/overview_text" />
 
         <TextView
@@ -105,9 +105,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@color/trailers_background"
+            android:gravity="center_horizontal"
             android:paddingLeft="10dp"
             android:text="Trailers :"
-            android:gravity="center_horizontal"
             android:textColor="@color/trailers_text"
             android:textSize="@dimen/trailers" />
 
@@ -118,12 +118,16 @@
         <!--android:prompt="@string/spinner_title"-->
         <!--/>-->
 
-        <ListView
-            android:id="@+id/listview_trailers"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:nestedScrollingEnabled="true" />
+        <!--<ListView-->
+        <!--android:id="@+id/listview_trailers"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:nestedScrollingEnabled="true" />-->
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"></android.support.v7.widget.RecyclerView>
 
         <TextView
             android:layout_width="match_parent"

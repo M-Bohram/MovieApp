@@ -5,6 +5,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,11 +36,12 @@ import java.util.List;
  */
 public class MainFragment extends Fragment {
 
+    private static final String LOG_TAG = MainFragment.class.getSimpleName();
     // this MovieAdapter object is global to be used in both onCreateView and OnPostExecute methods.
     private static MovieAdapter movieAdapter;
     // default value for sorting is popularity
     private String sorted_by = "popularity.desc";
-    private ArrayList<Movie> MoviesList = new ArrayList<Movie>();
+    private ArrayList<Movie> moviesList = new ArrayList<Movie>();
 
     public MainFragment() {
         // Required empty public constructor
@@ -51,7 +55,7 @@ public class MainFragment extends Fragment {
     //we save the data when rotating the device.
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList("Movies", MoviesList);
+        outState.putParcelableArrayList("Movies", moviesList);
         super.onSaveInstanceState(outState);
     }
 
@@ -67,12 +71,12 @@ public class MainFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_layout, container, false);
 
         if (savedInstanceState != null) {
-            MoviesList = savedInstanceState.getParcelableArrayList("Movies");
+            moviesList = savedInstanceState.getParcelableArrayList("Movies");
         } else {
             updateMovieData(sorted_by);
         }
 
-        movieAdapter = new MovieAdapter(getActivity(), MoviesList);
+        movieAdapter = new MovieAdapter(getActivity(), moviesList);
 
         GridView gridView = (GridView) rootView.findViewById(R.id.gridView);
         gridView.setAdapter(movieAdapter);
@@ -90,6 +94,31 @@ public class MainFragment extends Fragment {
         return rootView;
     }
 
+    public List<Movie> getMoviesDataFromJson(String jsonString) {
+
+        final String RESULTS = "results";
+
+        List<Movie> movies = new ArrayList<Movie>();
+
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+
+            JSONArray movieResultsArray = jsonObject.getJSONArray(RESULTS);
+
+            for (int index = 0; index < movieResultsArray.length(); index++) {
+
+                Movie movie = Utility.getMovieDetailsFromJsonObj(movieResultsArray, index);
+                movies.add(movie);
+            }
+            return movies;
+        } catch (JSONException e) {
+            Log.e("LOG_TAG", e.getMessage(), e);
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     /**
      * A callback interface that all activities containing this fragment must
      * implement. This mechanism allows activities to be notified of item
@@ -104,7 +133,12 @@ public class MainFragment extends Fragment {
 
     public static class FetchMovieTask extends AsyncTask<String, Void, List<Movie>> {
 
-        final static String RESULTS = "results";
+        final static String RESULTS;
+
+        static {
+            RESULTS = "results";
+        }
+
         private final String LOG_TAG = FetchMovieTask.class.getSimpleName();
 
         public List<Movie> getMoviesDataFromJson(String jsonString) {
@@ -224,5 +258,4 @@ public class MainFragment extends Fragment {
             }
         }
     }
-
 }
